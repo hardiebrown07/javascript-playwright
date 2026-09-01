@@ -1,82 +1,91 @@
-# 📝 The Task - Part 1
+# Playwright UI Test Automation Framework
 
-# Playwright JavaScript Test Framework
+A JavaScript test automation framework built with [Playwright](https://playwright.dev), demonstrating a
+maintainable approach to end-to-end UI testing: page object model, data-driven test generation,
+containerised execution and CI integration.
 
-##  Features
+The suite under test is the [GOV.UK holiday entitlement calculator](https://www.gov.uk/calculate-your-holiday-entitlement),
+a real, publicly available multi-step form with branching logic and server-side validation. It makes a
+useful target because the business rules are documented, the expected outputs are verifiable, and the
+markup follows the GOV.UK Design System.
 
-- **Cross-browser testing** (Chromium, Firefox, WebKit)
-- **Page Object Model (POM)** for better maintainability
-- **Data-driven testing** using JSON files
-- **Soft assertions** for robust validations
-- **Automatic reporting** with Playwright’s test reporter
+## Design
 
-## Setup Instructions
+**Page Object Model.** Each screen of the calculator is a class in `pages/`, exposing intent-revealing
+methods (`selectWorkPattern`, `enterDaysWorked`) rather than raw locators. Tests describe *what* a user
+does; the page objects own *how*.
 
-### **1️⃣ Install Dependencies**
+**Role-based locators.** Elements are found with `getByRole` and accessible names rather than CSS or
+XPath. Selectors survive markup changes, and a test that cannot find an element by its accessible role
+is usually surfacing a genuine accessibility defect.
+
+**Guarded option maps.** Radio-group selections are driven by lookup maps that throw a descriptive
+error on an unknown key, so an invalid test input fails immediately with a clear message instead of
+timing out against a locator that was never going to match.
+
+**Data-driven generation.** Test cases are generated from `testData/holidayEntitlementData.json`.
+Adding a new scenario means adding a row of data, not writing a new test.
+
+**Readable reports.** Every test is composed of `test.step()` blocks, so the HTML report reads as a
+sequence of business actions rather than a stack of assertions.
+
+## Layout
+
+```
+pages/                  Page objects, one per screen
+  HolidayCalculatorPage.js
+  WorkPatternPage.js
+  LeaveDatePage.js
+  ResultsPage.js
+testData/               JSON fixtures driving parameterised tests
+tests/
+  happyPath/            Five end-to-end entitlement calculations
+  negativeScenarios/    Input validation and error handling
+playwright.config.js    Projects, reporters, timeouts, artefacts
+Dockerfile              Containerised run
+docker-compose.yml      Compose entrypoint used by CI
+```
+
+## Running
 
 ```sh
 npm install
+npx playwright install --with-deps
+npm test
 ```
 
-## ▶ Running Tests
+| Script | Purpose |
+| --- | --- |
+| `npm test` | Run the full suite |
+| `npm run test:happy` | Happy path scenarios only |
+| `npm run test:negative` | Validation scenarios only |
+| `npm run test:headed` | Run with a visible browser |
+| `npm run test:debug` | Playwright inspector |
+| `npm run report` | Open the last HTML report |
 
-### **Run all tests**
+Tests run against Chromium by default. Firefox and WebKit are configured and can be selected with
+`npx playwright test --project=firefox`.
+
+The target host is read from `BASE_URL`, defaulting to `https://www.gov.uk`.
+
+### Docker
 
 ```sh
-npx playwright test
+docker compose up --build
 ```
 
-### **View Test Report**
+The report is written to `./playwright-report` on the host.
+
+## Failure artefacts
+
+Traces, screenshots and video are captured only on failure, keeping successful runs fast while giving
+a full reproduction for anything that breaks. Open a trace with:
 
 ```sh
-npx playwright show-report
+npx playwright show-trace test-results/<test-name>/trace.zip
 ```
 
-# 🎢 The Task - Part 2 (bonus task)
+## Continuous integration
 
-## Accessibility Issue: Low Contrast Placeholder Text&#x20;
-
-## Description
-
-Low contrast with placeholder text on form inputs. Light grey text against a white background breaches AA standards. 
-
-## Details
-
-- **Bug ID:** 1
-- **Date Reported:** 04/03/2025
-- **Reported By:** [Hardie Brown]
-- **Affected Page:** Accessibility Chat Robot (http\://localhost:8080/)
-- **Severity:** Medium
-- **Priority:** Medium
-- **Browser**: Chrome
-- **Device**: Desktop
-
-## Steps to Reproduce
-
-1. Run "npm start" on your  terminal
-2. Open browser and navigate to "http\://localhost:8080/"
-3. First Name, Email, and Your Message placeholder text has low contrast.
-
-## Expected Behavior
-
-- The text should have **at least a 4.5:1 contrast ratio** as per **WCAG 2.1 AA standards**.
-
-## Actual Behavior
-
-- First Name, Email, and Your Message placeholder text has low contrast against a white background.
-
-![Alt Text](image.png)
-
----
-
-List of Accessibility issues:
-
-2. &#x20;Missing \<label> Elements for Inputs	Screen readers cannot identify form fields correctly.	Add \<label> elements for Full Name, Email, and Message.
-3. No ARIA Roles or Labels for Form Elements	Screen readers may not understand what the fields are for.	Add aria-label attributes to improve accessibility.
-4. No alt Text for Robot Image	Screen readers won't describe the robot image.&#x9;
-
-
-
-
----
-
+`.github/workflows/playwright.yml` runs the suite on push and pull request against `main`, and can be
+triggered manually. The HTML report is published as a build artefact on every run, including failures.

@@ -2,11 +2,24 @@
   "name": "javascript-playwright",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "playwright test",
+    "test:happy": "playwright test tests/happyPath",
+    "test:negative": "playwright test tests/negativeScenarios",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "test-automation",
+    "e2e",
+    "page-object-model",
+    "javascript"
+  ],
+  "author": "Hardie Brown",
   "license": "ISC",
-  "description": "",
+  "description": "A JavaScript Playwright UI test automation framework: page object model, data-driven tests, Docker and CI.",
   "devDependencies": {
     "@playwright/test": "^1.50.1",
     "@types/node": "^22.13.6",

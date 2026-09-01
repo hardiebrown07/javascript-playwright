@@ -10,7 +10,7 @@ export default defineConfig({
   fullyParallel: true,  // Run tests in parallel
   forbidOnly: !!process.env.CI,  // Fail CI build if test.only is present
   retries: process.env.CI ? 2 : 0,  // Retry failed tests in CI
-  workers: process.env.DOCKER ? 4 : process.env.CI ? 1 : undefined,  // ✅ Use 4 workers in Docker, 1 in CI
+  workers: process.env.CI || process.env.DOCKER ? 4 : undefined,  // ✅ Use 4 workers in Docker, 1 in CI
   reporter: [
     ['html', { outputFolder: 'playwright-report' }], // Generates HTML report in `playwright-report/`
     ['json', { outputFile: 'playwright-report/test-results.json' }], // JSON report stored in `playwright-report/`
@@ -32,13 +32,13 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Dnpx esktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
   ],
 });

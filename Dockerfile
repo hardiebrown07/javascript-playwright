@@ -1,5 +1,5 @@
 # ✅ Use Playwright’s official Docker image with browsers pre-installed
-FROM mcr.microsoft.com/playwright:v1.40.0-focal
+FROM mcr.microsoft.com/playwright:v1.50.1-jammy
 
 # ✅ Set working directory inside the container
 WORKDIR /app
@@ -8,13 +8,10 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # ✅ Install dependencies
-RUN npm install
+RUN npm ci
 
 # ✅ Copy the rest of the project files
 COPY . .
-
-# ✅ Install Playwright Browsers inside Docker
-RUN npx playwright install --with-deps
 
 # ✅ Run Playwright tests when the container starts
 CMD ["npx", "playwright", "test"]
