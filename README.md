@@ -2,15 +2,6 @@
 
 A JavaScript test automation framework built with [Playwright](https://playwright.dev).
 
-The suite currently exercises the [GOV.UK holiday entitlement calculator](https://www.gov.uk/calculate-your-holiday-entitlement),
-a real multi-step form with branching logic and server-side validation. It is a stand-in target: the
-point of the repository is the framework around it, not the application under test.
-
-Tests are organised with a page object model, driven from JSON fixtures so scenarios are added as data
-rather than code, and composed of `test.step()` blocks so the HTML report reads as a sequence of
-business actions. Elements are located by accessible role rather than CSS or XPath. Traces,
-screenshots and video are captured on failure only.
-
 ## Getting started
 
 ```sh
@@ -37,12 +28,7 @@ Docker:
 docker compose up --build
 ```
 
-## Where this is going
-
-The goal is a framework that can be dropped into a client engagement and have meaningful coverage
-running in a pipeline within the first week, rather than something rebuilt from scratch each time.
-
-Planned:
+## Planned
 
 - TypeScript throughout, with typed page objects and fixtures
 - Custom fixtures so page objects are injected rather than instantiated per test
