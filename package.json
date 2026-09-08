@@ -6,6 +6,10 @@
     "postinstall": "playwright install",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
+    "test:local": "cross-env ENV=local playwright test",
+    "test:dev": "cross-env ENV=dev playwright test",
+    "test:staging": "cross-env ENV=staging playwright test",
+    "test:prod": "cross-env ENV=prod playwright test",
     "test:ui": "playwright test --ui",
     "test:happy": "playwright test tests/happyPath",
     "test:negative": "playwright test tests/negativeScenarios",
@@ -26,6 +30,7 @@
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.13.6",
+    "cross-env": "^10.1.0",
     "playwright": "^1.63.0",
     "typescript": "^7.0.2"
   },

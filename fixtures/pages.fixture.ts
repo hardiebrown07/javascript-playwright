@@ -1,8 +1,15 @@
 import { test as base } from '@playwright/test';
+import { getEnvironment } from '../config/environments';
+import { EnvironmentConfig } from '../config/types';
 import { HolidayCalculatorPage } from '../pages/HolidayCalculatorPage';
 import { LeaveDatePage } from '../pages/LeaveDatePage';
 import { ResultsPage } from '../pages/ResultsPage';
 import { WorkPatternPage } from '../pages/WorkPatternPage';
+
+/** Resolved environment config, so tests can branch on capability. */
+export interface Environment {
+  env: EnvironmentConfig;
+}
 
 /**
  * Page objects available to every test.
@@ -30,7 +37,11 @@ interface Journey {
   startedCalculator: void;
 }
 
-export const test = base.extend<Pages & Journey>({
+export const test = base.extend<Pages & Journey & Environment>({
+  env: async ({}, use) => {
+    await use(getEnvironment());
+  },
+
   holidayCalculatorPage: async ({ page }, use) => {
     await use(new HolidayCalculatorPage(page));
   },
@@ -48,13 +59,15 @@ export const test = base.extend<Pages & Journey>({
   },
 
   startedCalculator: [
-    async ({ holidayCalculatorPage }, use) => {
+    async ({ holidayCalculatorPage, env }, use) => {
       await test.step('Open the Holiday Entitlement Calculator', async () => {
         await holidayCalculatorPage.navigate();
       });
-      await test.step('Accept cookies if the banner is shown', async () => {
-        await holidayCalculatorPage.acceptCookies();
-      });
+      if (env.features.cookieBanner) {
+        await test.step('Accept cookies if the banner is shown', async () => {
+          await holidayCalculatorPage.acceptCookies();
+        });
+      }
       await test.step('Select the Start now button', async () => {
         await holidayCalculatorPage.selectStartNow();
       });

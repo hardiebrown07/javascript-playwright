@@ -23,7 +23,22 @@ npm test
 | `npm run typecheck` | Type check without emitting |
 
 Chromium runs by default. Firefox and WebKit are configured: `npx playwright test --project=firefox`.
-The target host comes from `BASE_URL`.
+
+## Environments
+
+`local`, `dev`, `staging` and `prod` are defined in `config/environments.ts`, each with its own
+base URL, timeouts, retry count and feature flags. Select one with `ENV`, or use the scripts:
+
+```sh
+npm run test:staging
+ENV=prod npx playwright test --project=chromium
+```
+
+`BASE_URL` overrides the selected environment's base URL, for review apps and preview deployments.
+
+Credentials are never stored in config. `credentialsFor('admin')` reads `ADMIN_USERNAME` and
+`ADMIN_PASSWORD` from the environment and fails with a named error if either is missing. Copy
+`.env.example` to `.env` to set them locally; `.env` is gitignored.
 
 Docker:
 
@@ -34,7 +49,6 @@ docker compose up --build
 ## Planned
 
 - Custom fixtures so page objects are injected rather than instantiated per test
-- Multi-environment configuration
 - Authentication via `globalSetup` and stored session state, with per-role fixtures
 - An API layer for contract tests and for test data setup and teardown
 - Test tagging (`@smoke`, `@regression`) for pipeline stage selection
