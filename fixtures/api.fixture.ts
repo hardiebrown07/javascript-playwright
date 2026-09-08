@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test';
 import { GovUkApiClient } from '../api/client';
 import { getEnvironment } from '../config/environments';
-import { EnvironmentConfig } from '../config/types';
+import type { EnvironmentConfig } from '../config/types';
 
 export interface ApiFixtures {
   env: EnvironmentConfig;

@@ -23,11 +23,13 @@ test('Calculate Holiday for employee leaving mid year with compressed hours', as
     await workPatternPage.enterHoursWorked(data.hoursWorked);
     await workPatternPage.enterDaysWorked(data.daysWorked);
   });
+
   await test.step(`Verify the holiday entitlement is ${data.expectedEntitlement}`, async () => {
     await expect(resultsPage.getHolidayEntitlementSummary()).toContainText(
       data.expectedEntitlement,
     );
   });
+
   await test.step('Verify form has the correct inputs', async () => {
     const summary = resultsPage.getHolidayEntitlementSummary();
     await expect(summary).toContainText('No');
@@ -40,9 +42,11 @@ test('Calculate Holiday for employee leaving mid year with compressed hours', as
     await expect(summary).toContainText(data.hoursWorked);
     await expect(summary).toContainText(data.daysWorked);
   });
+
   await test.step('Start again link is visible.', async () => {
     await expect(resultsPage.startAgainLink).toBeVisible();
   });
+
   await test.step('Verify URL.', async () => {
     await expect(page).toHaveURL(/compressed-hours/);
   });

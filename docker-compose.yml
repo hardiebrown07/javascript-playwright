@@ -5,4 +5,4 @@ services:
       - BASE_URL=${BASE_URL}
       - DOCKER=true
     volumes:
-      - ./playwright-report:/app/playwright-report 
+      - ./playwright-report:/app/playwright-report

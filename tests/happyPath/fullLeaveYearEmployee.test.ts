@@ -4,9 +4,9 @@ import testData from '../../testData/holidayEntitlementData.json';
 // One test per data row, generated at collection time. The five-day case is
 // the one a smoke run needs; the rest are coverage of the same journey.
 testData.fullLeaveYearEmployee.forEach(({ daysWorked, expectedEntitlement }) => {
-  test(`Calculate Holiday for full leave year employee with ${daysWorked} Days Worked per week.`, {
-    tag: daysWorked === '5.0' ? ['@smoke'] : [],
-  }, async ({
+  const smoke = daysWorked === '5.0' ? ' @smoke' : '';
+
+  test(`Calculate Holiday for full leave year employee with ${daysWorked} Days Worked per week.${smoke}`, async ({
     workPatternPage,
     resultsPage,
     page,
@@ -17,11 +17,13 @@ testData.fullLeaveYearEmployee.forEach(({ daysWorked, expectedEntitlement }) => 
       await workPatternPage.selectWorkOutHolidayFor('full_year');
       await workPatternPage.enterDaysWorked(daysWorked);
     });
+
     await test.step(`Verify the holiday entitlement is ${expectedEntitlement}`, async () => {
       await expect(resultsPage.getHolidayEntitlementSummary()).toContainText(
         expectedEntitlement,
       );
     });
+
     await test.step('Verify form has the correct inputs', async () => {
       const summary = resultsPage.getHolidayEntitlementSummary();
       await expect(summary).toContainText('No');
@@ -29,9 +31,11 @@ testData.fullLeaveYearEmployee.forEach(({ daysWorked, expectedEntitlement }) => 
       await expect(summary).toContainText('for a full leave year');
       await expect(summary).toContainText(daysWorked);
     });
+
     await test.step('Start again link is visible.', async () => {
       await expect(resultsPage.startAgainLink).toBeVisible();
     });
+
     await test.step('Verify URL.', async () => {
       await expect(page).toHaveURL(/days-worked-per-week/);
     });

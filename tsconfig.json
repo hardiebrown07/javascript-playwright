@@ -18,6 +18,15 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["api/**/*.ts", "auth/**/*.ts", "config/**/*.ts", "fixtures/**/*.ts", "pages/**/*.ts", "tests/**/*.ts", "testData/**/*.ts", "playwright.config.ts"],
+  "include": [
+    "api/**/*.ts",
+    "auth/**/*.ts",
+    "config/**/*.ts",
+    "fixtures/**/*.ts",
+    "pages/**/*.ts",
+    "tests/**/*.ts",
+    "testData/**/*.ts",
+    "playwright.config.ts"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { storageStatePath } from '../config/environments';
-import { Role } from '../config/roles';
+import type { Role } from '../config/roles';
 
 interface StoredCookie {
   name: string;

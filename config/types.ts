@@ -1,4 +1,4 @@
-import { AuthStrategyName } from '../auth/strategies/types';
+import type { AuthStrategyName } from '../auth/strategies/types';
 
 export type EnvironmentName = 'local' | 'dev' | 'staging' | 'prod';
 

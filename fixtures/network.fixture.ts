@@ -1,6 +1,7 @@
-import { Page, test as base } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { getEnvironment } from '../config/environments';
-import { EnvironmentConfig } from '../config/types';
+import type { EnvironmentConfig } from '../config/types';
 import { HolidayCalculatorPage } from '../pages/HolidayCalculatorPage';
 import { ResultsPage } from '../pages/ResultsPage';
 import { WorkPatternPage } from '../pages/WorkPatternPage';

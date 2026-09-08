@@ -1,5 +1,9 @@
 import { test as setup } from '@playwright/test';
-import { credentialsFor, getEnvironment, storageStatePath } from '../../config/environments';
+import {
+  credentialsFor,
+  getEnvironment,
+  storageStatePath,
+} from '../../config/environments';
 import { ROLES } from '../../config/roles';
 import { getAuthStrategy } from '../../auth/strategies';
 import { hasValidSession } from '../../auth/sessionStore';
@@ -18,9 +22,12 @@ for (const role of ROLES) {
     const env = getEnvironment();
     const strategy = getAuthStrategy(env.authStrategy);
 
-    await setup.step(`Sign in as ${role} using the ${strategy.name} strategy`, async () => {
-      await strategy.authenticate(page, credentialsFor(role), env);
-    });
+    await setup.step(
+      `Sign in as ${role} using the ${strategy.name} strategy`,
+      async () => {
+        await strategy.authenticate(page, credentialsFor(role), env);
+      },
+    );
 
     await page.context().storageState({ path: storageStatePath(role) });
   });

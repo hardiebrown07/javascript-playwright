@@ -1,20 +1,21 @@
 import { expect, test } from '../../fixtures/auth.fixture';
 
-test('a saved session lands straight on the app, with no login form', {
-  tag: ['@smoke'],
-}, async ({
-  page,
-  env,
-}) => {
-  // unauthenticated.test.ts asserts this same navigation is refused without a
-  // session, so reaching the inventory shows storageState was applied.
-  await page.goto(`${env.authURL}/inventory.html`);
+test(
+  'a saved session lands straight on the app, with no login form',
+  {
+    tag: ['@smoke'],
+  },
+  async ({ page, env }) => {
+    // unauthenticated.test.ts asserts this same navigation is refused without a
+    // session, so reaching the inventory shows storageState was applied.
+    await page.goto(`${env.authURL}/inventory.html`);
 
-  await expect(page).toHaveURL(/inventory\.html/);
-  await expect(page.locator('[data-test="error"]')).toHaveCount(0);
-  await expect(page.locator('[data-test="login-button"]')).toHaveCount(0);
-  await expect(page.locator('.inventory_list')).toBeVisible();
-});
+    await expect(page).toHaveURL(/inventory\.html/);
+    await expect(page.locator('[data-test="error"]')).toHaveCount(0);
+    await expect(page.locator('[data-test="login-button"]')).toHaveCount(0);
+    await expect(page.locator('.inventory_list')).toBeVisible();
+  },
+);
 
 test('the saved session file carries a real session cookie', async ({ page, env }) => {
   await page.goto(`${env.authURL}/inventory.html`);
@@ -22,7 +23,10 @@ test('the saved session file carries a real session cookie', async ({ page, env 
   const cookies = await page.context().cookies();
   const session = cookies.find((c) => c.name === 'session-username');
 
-  expect(session, 'expected a session-username cookie from the saved state').toBeDefined();
+  expect(
+    session,
+    'expected a session-username cookie from the saved state',
+  ).toBeDefined();
   expect(session?.value).toBe('standard_user');
 });
 

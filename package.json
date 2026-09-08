@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "prepare": "husky",
     "postinstall": "playwright install",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "playwright test",
     "test:smoke": "playwright test --grep @smoke --project=setup --project=api --project=chromium --project=authenticated",
     "test:regression": "playwright test",
@@ -30,16 +35,33 @@
   "license": "ISC",
   "description": "A TypeScript Playwright UI test automation framework: page object model, data-driven tests, Docker and CI.",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.6.0",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.13.6",
     "cross-env": "^10.1.0",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.11.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.0",
     "playwright": "^1.63.0",
-    "typescript": "^7.0.2",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.0",
     "zod": "^4.5.4"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml}": [
+      "prettier --write"
+    ]
   }
 }

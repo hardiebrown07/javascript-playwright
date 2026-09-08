@@ -1,6 +1,6 @@
-import { Locator, Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { format, parse } from 'date-fns';
-import { DateParts } from '../testData/types';
+import type { DateParts } from '../testData/types';
 
 /**
  * The three date screens (employment start, employment end, leave year start)
@@ -40,17 +40,7 @@ export class LeaveDatePage {
   }
 
   /** Renders a date the way the results summary displays it, e.g. "1 May 2024". */
-  formatDate(
-    { day, month, year }: DateParts,
-    dateFormat = 'd MMMM yyyy',
-  ): string {
-    return format(
-      parse(`${year}-${month}-${day}`, 'yyyy-MM-dd', new Date()),
-      dateFormat,
-    );
-  }
-
-  async getFormattedEntitlementDate(date: DateParts): Promise<string> {
-    return this.formatDate(date);
+  formatDate({ day, month, year }: DateParts, dateFormat = 'd MMMM yyyy'): string {
+    return format(parse(`${year}-${month}-${day}`, 'yyyy-MM-dd', new Date()), dateFormat);
   }
 }

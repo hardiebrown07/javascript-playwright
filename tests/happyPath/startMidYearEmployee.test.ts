@@ -21,11 +21,13 @@ test('Calculate Holiday for employee starting mid year with annualised hours.', 
     await leaveDatePage.enterEmploymentStartDate(data.employmentStartDate);
     await leaveDatePage.enterLeaveYearStartDate(data.employmentLeaveYearStartDate);
   });
+
   await test.step(`Verify the holiday entitlement is ${data.expectedEntitlement}`, async () => {
     await expect(resultsPage.getHolidayEntitlementSummary()).toContainText(
       data.expectedEntitlement,
     );
   });
+
   await test.step('Verify form has the correct inputs', async () => {
     const summary = resultsPage.getHolidayEntitlementSummary();
     await expect(summary).toContainText('No');
@@ -36,9 +38,11 @@ test('Calculate Holiday for employee starting mid year with annualised hours.', 
     await expect(summary).toContainText(expectedStartDate);
     await expect(summary).toContainText(expectedLeaveYearStartDate);
   });
+
   await test.step('Start again link is visible.', async () => {
     await expect(resultsPage.startAgainLink).toBeVisible();
   });
+
   await test.step('Verify URL.', async () => {
     await expect(page).toHaveURL(/annualised-hours/);
   });

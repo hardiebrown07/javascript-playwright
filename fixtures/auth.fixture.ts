@@ -1,7 +1,8 @@
-import { Page, test as base } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { getEnvironment, storageStatePath } from '../config/environments';
-import { Role } from '../config/roles';
-import { EnvironmentConfig } from '../config/types';
+import type { Role } from '../config/roles';
+import type { EnvironmentConfig } from '../config/types';
 
 export interface AuthFixtures {
   env: EnvironmentConfig;
@@ -20,7 +21,9 @@ export const test = base.extend<AuthFixtures>({
   },
 
   pageAs: async ({ browser }, use) => {
-    const contexts = await Promise.resolve([] as Awaited<ReturnType<typeof browser.newContext>>[]);
+    const contexts = await Promise.resolve(
+      [] as Awaited<ReturnType<typeof browser.newContext>>[],
+    );
 
     const open = async (role: Role): Promise<Page> => {
       const context = await browser.newContext({

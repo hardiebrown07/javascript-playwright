@@ -1,11 +1,7 @@
-import { APIRequestContext, APIResponse } from '@playwright/test';
-import { z } from 'zod';
-import {
-  contentItemSchema,
-  ContentItem,
-  searchResponseSchema,
-  SearchResponse,
-} from './schemas';
+import type { APIRequestContext, APIResponse } from '@playwright/test';
+import type { z } from 'zod';
+import type { ContentItem, SearchResponse } from './schemas';
+import { contentItemSchema, searchResponseSchema } from './schemas';
 
 export class ApiError extends Error {
   constructor(

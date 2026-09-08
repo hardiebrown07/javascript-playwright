@@ -1,6 +1,6 @@
-import { Page } from '@playwright/test';
-import { EnvironmentConfig } from '../../config/types';
-import { AuthStrategy, Credentials } from './types';
+import type { Page } from '@playwright/test';
+import type { EnvironmentConfig } from '../../config/types';
+import type { AuthStrategy, Credentials } from './types';
 
 /**
  * Microsoft Entra ID interactive sign-in.
@@ -30,7 +30,9 @@ export const entraIdStrategy: AuthStrategy = {
       await passwordOption.click();
     }
 
-    const password = page.locator('#i0118, input[type="password"][name="passwd"]').first();
+    const password = page
+      .locator('#i0118, input[type="password"][name="passwd"]')
+      .first();
     await password.waitFor({ state: 'visible' });
     await password.fill(credentials.password);
     await page.locator('#idSIButton9, input[type="submit"]').first().click();
@@ -38,7 +40,12 @@ export const entraIdStrategy: AuthStrategy = {
     const mfaChallenge = page.locator(
       '#idTxtBx_SAOTCC_OTC, #idDiv_SAOTCS_Proofs, [data-testid="mfa"]',
     );
-    if (await mfaChallenge.first().isVisible().catch(() => false)) {
+    if (
+      await mfaChallenge
+        .first()
+        .isVisible()
+        .catch(() => false)
+    ) {
       throw new Error(
         'Entra ID is requesting MFA for this account, which automated sign-in ' +
           'cannot satisfy. See the notes in auth/strategies/entraId.ts.',
@@ -47,7 +54,12 @@ export const entraIdStrategy: AuthStrategy = {
 
     // Decline "Stay signed in?": it issues a long-lived cookie we do not want in CI.
     const staySignedIn = page.locator('#idBtn_Back, #declineButton');
-    if (await staySignedIn.first().isVisible().catch(() => false)) {
+    if (
+      await staySignedIn
+        .first()
+        .isVisible()
+        .catch(() => false)
+    ) {
       await staySignedIn.first().click();
     }
 

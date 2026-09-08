@@ -11,16 +11,16 @@ npm test
 
 `npm install` pulls the browsers down as well, via a `postinstall` hook.
 
-| Script | Purpose |
-| --- | --- |
-| `npm test` | Run the full suite |
-| `npm run test:ui` | Interactive UI mode |
-| `npm run test:happy` | Happy path scenarios |
-| `npm run test:negative` | Validation scenarios |
-| `npm run test:headed` | Run with a visible browser |
-| `npm run test:debug` | Playwright inspector |
-| `npm run report` | Open the last HTML report |
-| `npm run typecheck` | Type check without emitting |
+| Script                  | Purpose                     |
+| ----------------------- | --------------------------- |
+| `npm test`              | Run the full suite          |
+| `npm run test:ui`       | Interactive UI mode         |
+| `npm run test:happy`    | Happy path scenarios        |
+| `npm run test:negative` | Validation scenarios        |
+| `npm run test:headed`   | Run with a visible browser  |
+| `npm run test:debug`    | Playwright inspector        |
+| `npm run report`        | Open the last HTML report   |
+| `npm run typecheck`     | Type check without emitting |
 
 Chromium runs by default. Firefox and WebKit are configured: `npx playwright test --project=firefox`.
 
@@ -117,9 +117,9 @@ one test needs a second identity.
 
 How a role signs in is configuration. `authStrategy` in `config/environments.ts` selects between:
 
-| Strategy | Status |
-| --- | --- |
-| `form` | Username and password against the application's own login form. Verified. |
+| Strategy   | Status                                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------- |
+| `form`     | Username and password against the application's own login form. Verified.                   |
 | `entra-id` | Microsoft Entra ID interactive sign-in. **Written but not verified against a real tenant.** |
 
 Entra ID cannot sign in automatically where the test account has MFA enforced; the strategy detects

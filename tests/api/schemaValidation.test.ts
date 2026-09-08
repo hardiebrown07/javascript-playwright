@@ -7,7 +7,7 @@ import { contentItemSchema, searchResponseSchema } from '../../api/schemas';
  * and that the error names the field.
  */
 
-async function validContent() {
+function validContent() {
   return {
     base_path: '/calculate-your-holiday-entitlement',
     content_id: '11a41426-4d09-4b73-b7c0-7c1a0bab63e4',
@@ -23,8 +23,8 @@ async function validContent() {
   };
 }
 
-test('a removed required field is rejected, and named', async () => {
-  const { title: _title, ...withoutTitle } = await validContent();
+test('a removed required field is rejected, and named', () => {
+  const { title: _unusedTitle, ...withoutTitle } = validContent();
 
   const result = contentItemSchema.safeParse(withoutTitle);
 
@@ -32,9 +32,9 @@ test('a removed required field is rejected, and named', async () => {
   expect(result.error?.issues.map((i) => i.path.join('.'))).toContain('title');
 });
 
-test('a field whose type changed is rejected', async () => {
+test('a field whose type changed is rejected', () => {
   // The classic silent break: a string becomes a number after a backend change.
-  const drifted = { ...(await validContent()), title: 42 };
+  const drifted = { ...validContent(), title: 42 };
 
   const result = contentItemSchema.safeParse(drifted);
 
@@ -42,10 +42,10 @@ test('a field whose type changed is rejected', async () => {
   expect(result.error?.issues[0]?.path).toEqual(['title']);
 });
 
-test('a malformed value of the right type is rejected', async () => {
+test('a malformed value of the right type is rejected', () => {
   // Right type, wrong shape: base_path must be a path, content_id a UUID.
   const malformed = {
-    ...(await validContent()),
+    ...validContent(),
     base_path: 'calculate-your-holiday-entitlement',
     content_id: 'not-a-uuid',
   };
@@ -58,11 +58,14 @@ test('a malformed value of the right type is rejected', async () => {
   expect(paths).toContain('content_id');
 });
 
-test('a nested array element is validated, not just the array', async () => {
+test('a nested array element is validated, not just the array', () => {
   const badResults = {
     total: 5,
     start: 0,
-    results: [{ title: 'fine', link: '/somewhere' }, { title: '', link: '/other' }],
+    results: [
+      { title: 'fine', link: '/somewhere' },
+      { title: '', link: '/other' },
+    ],
   };
 
   const result = searchResponseSchema.safeParse(badResults);
@@ -73,5 +76,7 @@ test('a nested array element is validated, not just the array', async () => {
 
 test('the live response still satisfies the schema', async ({ api }) => {
   // The schema rejects the cases above and still accepts what GOV.UK serves.
-  await expect(api.getContent('/calculate-your-holiday-entitlement')).resolves.toBeDefined();
+  await expect(
+    api.getContent('/calculate-your-holiday-entitlement'),
+  ).resolves.toBeDefined();
 });

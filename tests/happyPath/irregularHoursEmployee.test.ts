@@ -22,11 +22,13 @@ test(`Calculate Holiday for irregular hours employee with ${data.shiftHours} hou
     await workPatternPage.enterNoOfShifts(data.noOfShifts);
     await workPatternPage.enterShiftDays(data.shiftDays);
   });
+
   await test.step(`Verify the holiday entitlement is ${data.expectedEntitlement}`, async () => {
     await expect(resultsPage.getHolidayEntitlementSummary()).toContainText(
       data.expectedEntitlement,
     );
   });
+
   await test.step('Verify form has the correct inputs', async () => {
     const summary = resultsPage.getHolidayEntitlementSummary();
     await expect(summary).toContainText('Yes');
@@ -37,9 +39,11 @@ test(`Calculate Holiday for irregular hours employee with ${data.shiftHours} hou
     await expect(summary).toContainText(data.noOfShifts);
     await expect(summary).toContainText(data.shiftDays);
   });
+
   await test.step('Start again link is visible.', async () => {
     await expect(resultsPage.startAgainLink).toBeVisible();
   });
+
   await test.step('Verify URL.', async () => {
     await expect(page).toHaveURL(/shift-worker/);
   });

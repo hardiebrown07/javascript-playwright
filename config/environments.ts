@@ -1,5 +1,5 @@
-import { EnvironmentConfig, EnvironmentName } from './types';
-import { Role } from './roles';
+import type { EnvironmentConfig, EnvironmentName } from './types';
+import type { Role } from './roles';
 
 /** Non-secret settings only. Credentials come from the environment; see `credentialsFor`. */
 const environments: Record<EnvironmentName, EnvironmentConfig> = {
@@ -70,9 +70,7 @@ export function currentEnvironmentName(): EnvironmentName {
 /** BASE_URL overrides the environment's baseURL, for review apps and previews. */
 export function getEnvironment(): EnvironmentConfig {
   const config = environments[currentEnvironmentName()];
-  return process.env.BASE_URL
-    ? { ...config, baseURL: process.env.BASE_URL }
-    : config;
+  return process.env.BASE_URL ? { ...config, baseURL: process.env.BASE_URL } : config;
 }
 
 /** Throws rather than returning undefined, so a missing secret fails at setup. */

@@ -1,5 +1,5 @@
-import { Locator, Page } from '@playwright/test';
-import { EntitlementBasis, HolidayPeriod, IrregularHours } from '../testData/types';
+import type { Locator, Page } from '@playwright/test';
+import type { EntitlementBasis, HolidayPeriod, IrregularHours } from '../testData/types';
 
 export class WorkPatternPage {
   private readonly irregularHoursOptions: Record<IrregularHours, Locator>;
@@ -69,9 +69,7 @@ export class WorkPatternPage {
   ): Locator {
     const selected = options[option.toLowerCase() as K];
     if (!selected) {
-      throw new Error(
-        `Invalid option "${option}". Choose from: ${allowed.join(', ')}.`,
-      );
+      throw new Error(`Invalid option "${option}". Choose from: ${allowed.join(', ')}.`);
     }
     return selected;
   }

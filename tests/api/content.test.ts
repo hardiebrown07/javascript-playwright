@@ -3,17 +3,21 @@ import { ApiError } from '../../api/client';
 
 const CALCULATOR_PATH = '/calculate-your-holiday-entitlement';
 
-test('the calculator page exposes a valid content document', {
-  tag: ['@smoke'],
-}, async ({ api }) => {
-  // Throws with the offending field named if the shape has drifted.
-  const content = await api.getContent(CALCULATOR_PATH);
+test(
+  'the calculator page exposes a valid content document',
+  {
+    tag: ['@smoke'],
+  },
+  async ({ api }) => {
+    // Throws with the offending field named if the shape has drifted.
+    const content = await api.getContent(CALCULATOR_PATH);
 
-  expect(content.base_path).toBe(CALCULATOR_PATH);
-  expect(content.title).toBe('Calculate holiday entitlement');
-  expect(content.document_type).toBe('smart_answer');
-  expect(content.locale).toBe('en');
-});
+    expect(content.base_path).toBe(CALCULATOR_PATH);
+    expect(content.title).toBe('Calculate holiday entitlement');
+    expect(content.document_type).toBe('smart_answer');
+    expect(content.locale).toBe('en');
+  },
+);
 
 test('search returns matching, well-formed results', async ({ api }) => {
   const results = await api.search('holiday entitlement', 3);

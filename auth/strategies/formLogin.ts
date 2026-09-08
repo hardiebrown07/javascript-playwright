@@ -1,7 +1,8 @@
-import { expect, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage';
-import { EnvironmentConfig } from '../../config/types';
-import { AuthStrategy, Credentials } from './types';
+import type { EnvironmentConfig } from '../../config/types';
+import type { AuthStrategy, Credentials } from './types';
 
 /** Username and password against the application's own login form. */
 export const formLoginStrategy: AuthStrategy = {

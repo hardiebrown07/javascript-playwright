@@ -32,9 +32,15 @@ function invalid(scenario: string, input: string): InvalidInput {
 export function invalidDaysPerWeek(): InvalidInput[] {
   return [
     invalid('negative', String(faker.number.int({ min: -20, max: -1 }))),
-    invalid('above seven', faker.number.float({ min: 7.1, max: 99, fractionDigits: 1 }).toString()),
+    invalid(
+      'above seven',
+      faker.number.float({ min: 7.1, max: 99, fractionDigits: 1 }).toString(),
+    ),
     invalid('alphabetic', faker.word.noun()),
-    invalid('alphanumeric', `${faker.number.int({ min: 1, max: 6 })}${faker.string.alpha(3)}`),
+    invalid(
+      'alphanumeric',
+      `${faker.number.int({ min: 1, max: 6 })}${faker.string.alpha(3)}`,
+    ),
     invalid('symbols', faker.helpers.arrayElement(['!!', '£$%', '--', '?'])),
     invalid('whitespace only', '   '),
   ];
