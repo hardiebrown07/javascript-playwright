@@ -48,21 +48,29 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], testIdAttribute: 'data-test' },
     },
 
+    // Contract tests. No browser is launched unless a spec asks for `page`,
+    // so these run in milliseconds and gate the slower UI projects.
+    {
+      name: 'api',
+      testDir: './tests/api',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // Unauthenticated journeys against the calculator.
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/authenticated/**', '**/*.setup.ts'],
+      testIgnore: ['**/authenticated/**', '**/api/**', '**/*.setup.ts'],
     },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: ['**/authenticated/**', '**/*.setup.ts'],
+      testIgnore: ['**/authenticated/**', '**/api/**', '**/*.setup.ts'],
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: ['**/authenticated/**', '**/*.setup.ts'],
+      testIgnore: ['**/authenticated/**', '**/api/**', '**/*.setup.ts'],
     },
 
     // Starts signed in: no login step, no login flakiness.

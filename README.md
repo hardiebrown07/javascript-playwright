@@ -77,10 +77,28 @@ the challenge and fails with the available options. Adding a strategy means impl
 `AuthStrategy` and registering it in `auth/strategies/index.ts`. Pointing the framework at another
 application means replacing `pages/LoginPage.ts` and the `authURL`, not touching any test.
 
+## API tests
+
+`tests/api/` runs against the GOV.UK Content and Search APIs, the same application the UI journeys
+exercise. No browser is launched unless a spec asks for `page`, so the whole set completes in about a
+second and is the right gate before the slower UI projects.
+
+```sh
+npx playwright test --project=api
+```
+
+`api/client.ts` validates every response against a zod schema in `api/schemas.ts` and returns a typed
+object, so a contract break fails at the boundary naming the offending field rather than as
+`undefined is not an object` further downstream. `schemaValidation.test.ts` is the control for that:
+it asserts realistic breakages are rejected, so the schemas cannot quietly degrade into accepting
+anything.
+
+`crossLayer.test.ts` fetches the expected content from the API and asserts the rendered page matches
+it, rather than hardcoding the title. It fails only when the two genuinely disagree.
+
 ## Planned
 
 - Custom fixtures so page objects are injected rather than instantiated per test
-- An API layer for contract tests and for test data setup and teardown
 - Test tagging (`@smoke`, `@regression`) for pipeline stage selection
 - Accessibility checks and visual regression
 - Linting and pre-commit hooks

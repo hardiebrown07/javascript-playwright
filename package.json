@@ -32,7 +32,8 @@
     "@types/node": "^22.13.6",
     "cross-env": "^10.1.0",
     "playwright": "^1.63.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "zod": "^4.5.4"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
