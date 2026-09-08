@@ -24,45 +24,55 @@
   "startingAndLeavingEmployee": {
     "hoursWorked": "20.0",
     "daysWorked": "3.0",
-    "employmentStartDate": {"day": "15", "month": "12", "year": "2019"},
-    "employmentEndDate": {"day": "31", "month": "12", "year": "2019"},
+    "employmentStartDate": {
+      "day": "15",
+      "month": "12",
+      "year": "2019"
+    },
+    "employmentEndDate": {
+      "day": "31",
+      "month": "12",
+      "year": "2019"
+    },
     "expectedEntitlement": "5.3 hours"
   },
   "startMidYearEmployee": {
-    "employmentStartDate": {"day": "01", "month": "05", "year": "2024"},
-    "employmentLeaveYearStartDate": {"day": "01", "month": "01","year": "2024"},
+    "employmentStartDate": {
+      "day": "01",
+      "month": "05",
+      "year": "2024"
+    },
+    "employmentLeaveYearStartDate": {
+      "day": "01",
+      "month": "01",
+      "year": "2024"
+    },
     "expectedEntitlement": "3.74 weeks"
   },
   "leaveMidYearEmployee": {
     "hoursWorked": "35.0",
     "daysWorked": "5.0",
-    "employmentEndDate": {"day": "01", "month": "05", "year": "2024"},
-    "employmentLeaveYearStartDate": {"day": "01", "month": "01","year": "2024"},
+    "employmentEndDate": {
+      "day": "01",
+      "month": "05",
+      "year": "2024"
+    },
+    "employmentLeaveYearStartDate": {
+      "day": "01",
+      "month": "01",
+      "year": "2024"
+    },
     "expectedEntitlement": "65 hours and 24 minutes"
   },
   "irregularHoursEmployee": {
     "shiftHours": "10.0",
     "noOfShifts": "150",
     "shiftDays": "160",
-    "employmentLeaveYearStartDate": {"day": "01", "month": "01","year": "2020"},
+    "employmentLeaveYearStartDate": {
+      "day": "01",
+      "month": "01",
+      "year": "2020"
+    },
     "expectedEntitlement": "28 shifts"
-  },
-
-  "daysWorkedPerWeekValidation": [
-    {
-      "scenario": "Negative value",
-      "input": "-5",
-      "expectedError": "There are only 7 days in a week. Please check and enter a correct value."
-    },
-    {
-      "scenario": "Enter Character",
-      "input": "five",
-      "expectedError": "There are only 7 days in a week. Please check and enter a correct value."
-    },
-    {
-      "scenario": "Over 7 days",
-      "input": "7.1",
-      "expectedError": "There are only 7 days in a week. Please check and enter a correct value."
-    }
-  ]
+  }
 }

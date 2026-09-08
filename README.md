@@ -43,6 +43,19 @@ test('name', { tag: ['@smoke'] }, async ({ page }) => {
 
 `--grep-invert @smoke` selects the complement, for a nightly job that skips what the PR gate covered.
 
+## Test data
+
+The calculator cases assert exact figures, so they stay on fixed rows in
+`testData/holidayEntitlementData.json`. Generating a random number of days worked would mean
+reimplementing the entitlement calculation to know what to expect, and a test that reproduces the
+code under test cannot catch that code being wrong.
+
+Validation is the case where generated input works: every invalid value is rejected with the same
+message, so no oracle is needed. `testData/generators.ts` covers six families of bad input.
+
+The seed is fixed so a failure reproduces on a rerun, and recorded on the run as an annotation.
+`FAKER_SEED=777 npm test` sweeps for cases the default seed never reaches.
+
 ## Environments
 
 `local`, `dev`, `staging` and `prod` are defined in `config/environments.ts`, each with its own
