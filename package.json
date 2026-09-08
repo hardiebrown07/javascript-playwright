@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "postinstall": "playwright install",
     "test": "playwright test",
     "test:happy": "playwright test tests/happyPath",
     "test:negative": "playwright test tests/negativeScenarios",

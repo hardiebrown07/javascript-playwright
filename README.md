@@ -6,9 +6,10 @@ A JavaScript test automation framework built with [Playwright](https://playwrigh
 
 ```sh
 npm install
-npx playwright install
 npm test
 ```
+
+`npm install` pulls the browsers down as well, via a `postinstall` hook.
 
 | Script | Purpose |
 | --- | --- |
