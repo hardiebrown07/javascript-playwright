@@ -1,33 +1,18 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/pages.fixture';
 import testData from '../../testData/holidayEntitlementData.json';
-import { HolidayCalculatorPage } from '../../pages/HolidayCalculatorPage';
-import { LeaveDatePage } from '../../pages/LeaveDatePage';
-import { ResultsPage } from '../../pages/ResultsPage';
-import { WorkPatternPage } from '../../pages/WorkPatternPage';
 
 const data = testData.irregularHoursEmployee;
 
 test(`Calculate Holiday for irregular hours employee with ${data.shiftHours} hour shifts.`, async ({
+  workPatternPage,
+  leaveDatePage,
+  resultsPage,
   page,
 }) => {
-  const holidayCalculator = new HolidayCalculatorPage(page);
-  const resultsPage = new ResultsPage(page);
-  const workPatternPage = new WorkPatternPage(page);
-  const leaveDatePage = new LeaveDatePage(page);
-
   const expectedLeaveYearDate = leaveDatePage.formatDate(
     data.employmentLeaveYearStartDate,
   );
 
-  await test.step('Open the Holiday Entitlement Calculator', async () => {
-    await holidayCalculator.navigate();
-  });
-  await test.step('Accept Cookies if they are visible', async () => {
-    await holidayCalculator.acceptCookies();
-  });
-  await test.step('Select start now button', async () => {
-    await holidayCalculator.selectStartNow();
-  });
   await test.step('Complete the form', async () => {
     await workPatternPage.selectIrregularHours('yes');
     await leaveDatePage.enterEmploymentStartDate(data.employmentLeaveYearStartDate);

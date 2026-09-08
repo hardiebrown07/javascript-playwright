@@ -1,27 +1,13 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/pages.fixture';
 import testData from '../../testData/holidayEntitlementData.json';
-import { HolidayCalculatorPage } from '../../pages/HolidayCalculatorPage';
-import { ResultsPage } from '../../pages/ResultsPage';
-import { WorkPatternPage } from '../../pages/WorkPatternPage';
 
 // One test per data row, generated at collection time.
 testData.fullLeaveYearEmployee.forEach(({ daysWorked, expectedEntitlement }) => {
   test(`Calculate Holiday for full leave year employee with ${daysWorked} Days Worked per week.`, async ({
+    workPatternPage,
+    resultsPage,
     page,
   }) => {
-    const holidayCalculator = new HolidayCalculatorPage(page);
-    const resultsPage = new ResultsPage(page);
-    const workPatternPage = new WorkPatternPage(page);
-
-    await test.step('Open the Holiday Entitlement Calculator', async () => {
-      await holidayCalculator.navigate();
-    });
-    await test.step('Accept Cookies if they are visible', async () => {
-      await holidayCalculator.acceptCookies();
-    });
-    await test.step('Select start now button', async () => {
-      await holidayCalculator.selectStartNow();
-    });
     await test.step('Complete the form', async () => {
       await workPatternPage.selectIrregularHours('no');
       await workPatternPage.selectHolidayEntitlement('days');
