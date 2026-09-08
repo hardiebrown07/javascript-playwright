@@ -56,21 +56,28 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
+    // Routing is per-page, so these run on one browser only.
+    {
+      name: 'network',
+      testDir: './tests/network',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // Unauthenticated journeys against the calculator.
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/authenticated/**', '**/api/**', '**/*.setup.ts'],
+      testIgnore: ['**/authenticated/**', '**/api/**', '**/network/**', '**/*.setup.ts'],
     },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: ['**/authenticated/**', '**/api/**', '**/*.setup.ts'],
+      testIgnore: ['**/authenticated/**', '**/api/**', '**/network/**', '**/*.setup.ts'],
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: ['**/authenticated/**', '**/api/**', '**/*.setup.ts'],
+      testIgnore: ['**/authenticated/**', '**/api/**', '**/network/**', '**/*.setup.ts'],
     },
 
     // Starts signed in: no login step, no login flakiness.

@@ -43,6 +43,24 @@ test('name', { tag: ['@smoke'] }, async ({ page }) => {
 
 `--grep-invert @smoke` selects the complement, for a nightly job that skips what the PR gate covered.
 
+## Network interception
+
+`tests/network/` uses `page.route()` to cover states the live site cannot produce on demand.
+
+```sh
+npx playwright test --project=network
+```
+
+Third parties blocked, so the gate does not fail on a Google outage. Analytics returning 503, which
+a user should never notice. And two progressive-enhancement checks: the calculation with all
+JavaScript blocked, and the page with its stylesheet gone. The GOV.UK Design System requires
+services to work without client-side JavaScript, so those assert an obligation rather than a
+hypothetical.
+
+`contactedHosts` records `requestfinished` rather than `request`. The request event fires before
+routing decides, so an aborted request appears there and a blocking assertion would pass whether or
+not the block worked.
+
 ## Test data
 
 The calculator cases assert exact figures, so they stay on fixed rows in
