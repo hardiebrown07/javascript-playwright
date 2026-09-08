@@ -10,7 +10,9 @@ export default defineConfig({
   fullyParallel: true,  // Run tests in parallel
   forbidOnly: !!process.env.CI,  // Fail CI build if test.only is present
   retries: process.env.CI ? 2 : 0,  // Retry failed tests in CI
-  workers: process.env.CI || process.env.DOCKER ? 4 : undefined,  // ✅ Use 4 workers in Docker, 1 in CI
+  // 4 workers in CI and Docker; locally Playwright defaults to half the CPU cores.
+  // Use --workers=1 for headed runs, or you get one browser window per worker.
+  workers: process.env.CI || process.env.DOCKER ? 4 : undefined,
   reporter: [
     ['html', { outputFolder: 'playwright-report' }], // Generates HTML report in `playwright-report/`
     ['json', { outputFile: 'playwright-report/test-results.json' }], // JSON report stored in `playwright-report/`
