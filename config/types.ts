@@ -22,6 +22,8 @@ export interface EnvironmentConfig {
   name: EnvironmentName;
   baseURL: string;
   apiURL: string;
+  /** Login page for the authenticated application. */
+  authURL: string;
   timeouts: Timeouts;
   retries: number;
   features: FeatureFlags;

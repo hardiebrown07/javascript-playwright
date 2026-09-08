@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
-import { getEnvironment } from './config/environments';
+import { getEnvironment, storageStatePath } from './config/environments';
 
 dotenv.config();
 
@@ -41,8 +41,40 @@ export default defineConfig({
   },
 
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    // Logs each role in once and saves its session to .auth/.
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      use: { ...devices['Desktop Chrome'], testIdAttribute: 'data-test' },
+    },
+
+    // Unauthenticated journeys against the calculator.
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+      testIgnore: ['**/authenticated/**', '**/*.setup.ts'],
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+      testIgnore: ['**/authenticated/**', '**/*.setup.ts'],
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+      testIgnore: ['**/authenticated/**', '**/*.setup.ts'],
+    },
+
+    // Starts signed in: no login step, no login flakiness.
+    {
+      name: 'authenticated',
+      testMatch: '**/authenticated/**',
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        testIdAttribute: 'data-test',
+        storageState: storageStatePath('standard'),
+      },
+    },
   ],
 });

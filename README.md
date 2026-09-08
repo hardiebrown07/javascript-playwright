@@ -46,10 +46,25 @@ Docker:
 docker compose up --build
 ```
 
+## Authentication
+
+`tests/auth/auth.setup.ts` signs each role in `config/roles.ts` in once before the suite runs and
+saves its cookies and localStorage to `.auth/<role>.json`. Authenticated specs start already signed
+in, so a login form is never exercised by a test that is not about logging in.
+
+```sh
+npx playwright test --project=authenticated
+```
+
+`fixtures/auth.fixture.ts` exports its own `test` for these specs, and provides `pageAs(role)` where
+one test needs a second identity. `.auth/` is gitignored: those files are live sessions.
+
+Pointing this at another application means replacing `pages/LoginPage.ts` and the `authURL` in
+`config/environments.ts`. The setup script and fixtures are unchanged.
+
 ## Planned
 
 - Custom fixtures so page objects are injected rather than instantiated per test
-- Authentication via `globalSetup` and stored session state, with per-role fixtures
 - An API layer for contract tests and for test data setup and teardown
 - Test tagging (`@smoke`, `@regression`) for pipeline stage selection
 - Accessibility checks and visual regression

@@ -40,3 +40,5 @@ test-results
 .eslintcache
 playwright.env
 /firefox/
+# Saved sessions: live credentials in cookie form
+.auth/

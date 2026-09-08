@@ -1,4 +1,5 @@
 import { EnvironmentConfig, EnvironmentName } from './types';
+import { Role } from './roles';
 
 /**
  * Per-environment settings.
@@ -12,6 +13,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     name: 'local',
     baseURL: 'http://localhost:3000',
     apiURL: 'http://localhost:3000/api',
+    authURL: 'https://www.saucedemo.com',
     timeouts: { action: 10_000, navigation: 30_000, expect: 5_000 },
     retries: 0,
     features: { analytics: false, cookieBanner: true },
@@ -21,6 +23,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     name: 'dev',
     baseURL: 'https://www.gov.uk',
     apiURL: 'https://www.gov.uk/api',
+    authURL: 'https://www.saucedemo.com',
     timeouts: { action: 10_000, navigation: 30_000, expect: 5_000 },
     retries: 1,
     features: { analytics: false, cookieBanner: true },
@@ -30,6 +33,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     name: 'staging',
     baseURL: 'https://www.gov.uk',
     apiURL: 'https://www.gov.uk/api',
+    authURL: 'https://www.saucedemo.com',
     // Shared environment, so allow more headroom for a slower host.
     timeouts: { action: 15_000, navigation: 45_000, expect: 10_000 },
     retries: 2,
@@ -40,6 +44,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     name: 'prod',
     baseURL: 'https://www.gov.uk',
     apiURL: 'https://www.gov.uk/api',
+    authURL: 'https://www.saucedemo.com',
     timeouts: { action: 15_000, navigation: 45_000, expect: 10_000 },
     retries: 2,
     features: { analytics: true, cookieBanner: true },
@@ -98,3 +103,11 @@ export function credentialsFor(role: string): { username: string; password: stri
 }
 
 export { environments };
+
+/**
+ * Where a role's saved session lives. Gitignored: these files are live
+ * credentials in cookie form.
+ */
+export function storageStatePath(role: Role): string {
+  return `.auth/${role}.json`;
+}
