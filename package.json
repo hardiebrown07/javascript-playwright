@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "playwright install",
+    "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:happy": "playwright test tests/happyPath",
@@ -14,18 +15,19 @@
   },
   "keywords": [
     "playwright",
+    "typescript",
     "test-automation",
     "e2e",
-    "page-object-model",
-    "javascript"
+    "page-object-model"
   ],
   "author": "Hardie Brown",
   "license": "ISC",
-  "description": "A JavaScript Playwright UI test automation framework: page object model, data-driven tests, Docker and CI.",
+  "description": "A TypeScript Playwright UI test automation framework: page object model, data-driven tests, Docker and CI.",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.13.6",
-    "playwright": "^1.63.0"
+    "playwright": "^1.63.0",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
