@@ -1,6 +1,8 @@
 import { expect, test } from '../../fixtures/auth.fixture';
 
-test('a saved session lands straight on the app, with no login form', async ({
+test('a saved session lands straight on the app, with no login form', {
+  tag: ['@smoke'],
+}, async ({
   page,
   env,
 }) => {

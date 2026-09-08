@@ -6,6 +6,8 @@
     "postinstall": "playwright install",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke --project=setup --project=api --project=chromium --project=authenticated",
+    "test:regression": "playwright test",
     "test:local": "cross-env ENV=local playwright test",
     "test:dev": "cross-env ENV=dev playwright test",
     "test:staging": "cross-env ENV=staging playwright test",

@@ -3,7 +3,9 @@ import { ApiError } from '../../api/client';
 
 const CALCULATOR_PATH = '/calculate-your-holiday-entitlement';
 
-test('the calculator page exposes a valid content document', async ({ api }) => {
+test('the calculator page exposes a valid content document', {
+  tag: ['@smoke'],
+}, async ({ api }) => {
   // Throws with the offending field named if the shape has drifted.
   const content = await api.getContent(CALCULATOR_PATH);
 

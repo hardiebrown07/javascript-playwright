@@ -24,6 +24,25 @@ npm test
 
 Chromium runs by default. Firefox and WebKit are configured: `npx playwright test --project=firefox`.
 
+## Tags
+
+`@smoke` marks the shortest set that gives confidence the application is up: one calculation, one
+validation case, one API contract check, one authenticated session.
+
+```sh
+npm run test:smoke        # 7 tests, ~3s, Chromium only
+npm run test:regression   # everything, all browsers, ~19s
+```
+
+Nothing carries a `@regression` tag. Untagged tests run by default, so tagging all 47 would be
+upkeep with no benefit. Add tags with the option form, which keeps them out of test titles:
+
+```ts
+test('name', { tag: ['@smoke'] }, async ({ page }) => {
+```
+
+`--grep-invert @smoke` selects the complement, for a nightly job that skips what the PR gate covered.
+
 ## Environments
 
 `local`, `dev`, `staging` and `prod` are defined in `config/environments.ts`, each with its own

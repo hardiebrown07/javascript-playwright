@@ -1,9 +1,12 @@
 import { expect, test } from '../../fixtures/pages.fixture';
 import testData from '../../testData/holidayEntitlementData.json';
 
-// One test per data row, generated at collection time.
+// One test per data row, generated at collection time. The five-day case is
+// the one a smoke run needs; the rest are coverage of the same journey.
 testData.fullLeaveYearEmployee.forEach(({ daysWorked, expectedEntitlement }) => {
-  test(`Calculate Holiday for full leave year employee with ${daysWorked} Days Worked per week.`, async ({
+  test(`Calculate Holiday for full leave year employee with ${daysWorked} Days Worked per week.`, {
+    tag: daysWorked === '5.0' ? ['@smoke'] : [],
+  }, async ({
     workPatternPage,
     resultsPage,
     page,

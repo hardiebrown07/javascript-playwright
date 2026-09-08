@@ -1,7 +1,9 @@
 import { expect, test } from '../../fixtures/pages.fixture';
 import testData from '../../testData/holidayEntitlementData.json';
 
-test('Form Validation for days worked per week value.', async ({
+test('Form Validation for days worked per week value.', {
+  tag: ['@smoke'],
+}, async ({
   workPatternPage,
 }) => {
   await test.step('Navigate to the Days Worked per Week input', async () => {
