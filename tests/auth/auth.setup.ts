@@ -1,35 +1,32 @@
-import { expect, test as setup } from '@playwright/test';
+import { test as setup } from '@playwright/test';
 import { credentialsFor, getEnvironment, storageStatePath } from '../../config/environments';
-import { LoginPage } from '../../pages/LoginPage';
-import { ROLES, Role } from '../../config/roles';
+import { ROLES } from '../../config/roles';
+import { getAuthStrategy } from '../../auth/strategies';
+import { hasValidSession } from '../../auth/sessionStore';
 
 /**
- * Logs each role in once, before the suite runs, and writes the resulting
- * cookies and localStorage to disk. Every authenticated test then starts
- * already signed in.
+ * Signs each role in once, before the suite runs, and saves the resulting
+ * cookies and localStorage to disk.
  *
- * The point is not convenience. A suite of 300 tests that each log in through
- * the UI spends most of its wall-clock time on a form it is not testing, and
- * inherits a failure mode where one flaky login fails an unrelated assertion.
+ * A saved session that is still in date is reused rather than re-created, so
+ * authentication persists across runs and not merely across the tests within
+ * one run. On an SSO flow, where sign-in is a redirect chain rather than a
+ * single form post, that is usually the slowest thing in the pipeline.
  */
 for (const role of ROLES) {
   setup(`authenticate as ${role}`, async ({ page }) => {
+    if (hasValidSession(role)) {
+      setup.skip(true, `Reusing the saved session for "${role}"`);
+      return;
+    }
+
     const env = getEnvironment();
-    const { username, password } = credentialsFor(role);
-    const loginPage = new LoginPage(page);
+    const strategy = getAuthStrategy(env.authStrategy);
 
-    await setup.step(`Sign in as ${role}`, async () => {
-      await loginPage.goto(env.authURL);
-      await loginPage.login(username, password);
+    await setup.step(`Sign in as ${role} using the ${strategy.name} strategy`, async () => {
+      await strategy.authenticate(page, credentialsFor(role), env);
     });
 
-    await setup.step('Confirm the session is established', async () => {
-      // Landing on the inventory is the app's proof that login succeeded.
-      // Asserting here means a credential problem fails in setup with a clear
-      // message, rather than as a puzzling assertion failure in every test.
-      await expect(page).toHaveURL(/inventory\.html/);
-    });
-
-    await page.context().storageState({ path: storageStatePath(role as Role) });
+    await page.context().storageState({ path: storageStatePath(role) });
   });
 }

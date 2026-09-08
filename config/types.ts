@@ -1,3 +1,5 @@
+import { AuthStrategyName } from '../auth/strategies/types';
+
 export type EnvironmentName = 'local' | 'dev' | 'staging' | 'prod';
 
 export interface Timeouts {
@@ -24,6 +26,8 @@ export interface EnvironmentConfig {
   apiURL: string;
   /** Login page for the authenticated application. */
   authURL: string;
+  /** How to sign in: a plain form, or an SSO provider. */
+  authStrategy: AuthStrategyName;
   timeouts: Timeouts;
   retries: number;
   features: FeatureFlags;

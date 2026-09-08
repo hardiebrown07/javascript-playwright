@@ -14,6 +14,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     baseURL: 'http://localhost:3000',
     apiURL: 'http://localhost:3000/api',
     authURL: 'https://www.saucedemo.com',
+    authStrategy: 'form',
     timeouts: { action: 10_000, navigation: 30_000, expect: 5_000 },
     retries: 0,
     features: { analytics: false, cookieBanner: true },
@@ -24,6 +25,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     baseURL: 'https://www.gov.uk',
     apiURL: 'https://www.gov.uk/api',
     authURL: 'https://www.saucedemo.com',
+    authStrategy: 'form',
     timeouts: { action: 10_000, navigation: 30_000, expect: 5_000 },
     retries: 1,
     features: { analytics: false, cookieBanner: true },
@@ -34,6 +36,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     baseURL: 'https://www.gov.uk',
     apiURL: 'https://www.gov.uk/api',
     authURL: 'https://www.saucedemo.com',
+    authStrategy: 'form',
     // Shared environment, so allow more headroom for a slower host.
     timeouts: { action: 15_000, navigation: 45_000, expect: 10_000 },
     retries: 2,
@@ -45,6 +48,7 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     baseURL: 'https://www.gov.uk',
     apiURL: 'https://www.gov.uk/api',
     authURL: 'https://www.saucedemo.com',
+    authStrategy: 'form',
     timeouts: { action: 15_000, navigation: 45_000, expect: 10_000 },
     retries: 2,
     features: { analytics: true, cookieBanner: true },
@@ -105,9 +109,12 @@ export function credentialsFor(role: string): { username: string; password: stri
 export { environments };
 
 /**
- * Where a role's saved session lives. Gitignored: these files are live
- * credentials in cookie form.
+ * Where a role's saved session lives.
+ *
+ * `playwright/.auth` is the location Playwright's own documentation
+ * recommends. Gitignored: these files contain live cookies that would let
+ * anyone holding them impersonate the test account.
  */
 export function storageStatePath(role: Role): string {
-  return `.auth/${role}.json`;
+  return `playwright/.auth/${role}.json`;
 }

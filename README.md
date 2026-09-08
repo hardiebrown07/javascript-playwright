@@ -56,11 +56,26 @@ in, so a login form is never exercised by a test that is not about logging in.
 npx playwright test --project=authenticated
 ```
 
-`fixtures/auth.fixture.ts` exports its own `test` for these specs, and provides `pageAs(role)` where
-one test needs a second identity. `.auth/` is gitignored: those files are live sessions.
+A saved session that is still in date is reused rather than recreated, so authentication persists
+across runs and not only across the tests within a run. `playwright/.auth/` is gitignored: those
+files are live cookies that would let anyone holding them impersonate the test account.
 
-Pointing this at another application means replacing `pages/LoginPage.ts` and the `authURL` in
-`config/environments.ts`. The setup script and fixtures are unchanged.
+`fixtures/auth.fixture.ts` exports its own `test` for these specs, and provides `pageAs(role)` where
+one test needs a second identity.
+
+### Strategies
+
+How a role signs in is configuration. `authStrategy` in `config/environments.ts` selects between:
+
+| Strategy | Status |
+| --- | --- |
+| `form` | Username and password against the application's own login form. Verified. |
+| `entra-id` | Microsoft Entra ID interactive sign-in. **Written but not verified against a real tenant.** |
+
+Entra ID cannot sign in automatically where the test account has MFA enforced; the strategy detects
+the challenge and fails with the available options. Adding a strategy means implementing
+`AuthStrategy` and registering it in `auth/strategies/index.ts`. Pointing the framework at another
+application means replacing `pages/LoginPage.ts` and the `authURL`, not touching any test.
 
 ## Planned
 
