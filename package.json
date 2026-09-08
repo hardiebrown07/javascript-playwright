@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "playwright install",
     "test": "playwright test",
+    "test:ui": "playwright test --ui",
     "test:happy": "playwright test tests/happyPath",
     "test:negative": "playwright test tests/negativeScenarios",
     "test:headed": "playwright test --headed",

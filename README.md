@@ -14,6 +14,7 @@ npm test
 | Script | Purpose |
 | --- | --- |
 | `npm test` | Run the full suite |
+| `npm run test:ui` | Interactive UI mode |
 | `npm run test:happy` | Happy path scenarios |
 | `npm run test:negative` | Validation scenarios |
 | `npm run test:headed` | Run with a visible browser |
