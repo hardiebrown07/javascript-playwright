@@ -1,13 +1,7 @@
 import { EnvironmentConfig, EnvironmentName } from './types';
 import { Role } from './roles';
 
-/**
- * Per-environment settings.
- *
- * Non-secret values live here so they are reviewable in version control and
- * diff cleanly. Secrets never do: they come from environment variables, and
- * in CI from the pipeline's secret store. See `credentialsFor()` below.
- */
+/** Non-secret settings only. Credentials come from the environment; see `credentialsFor`. */
 const environments: Record<EnvironmentName, EnvironmentConfig> = {
   local: {
     name: 'local',
@@ -20,6 +14,8 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
     features: { analytics: false, cookieBanner: true },
   },
 
+  // dev, staging and prod share a base URL because GOV.UK is the only real
+  // target available. On a client engagement each points at its own host.
   dev: {
     name: 'dev',
     baseURL: 'https://www.gov.uk',
@@ -61,7 +57,6 @@ function isEnvironmentName(value: string): value is EnvironmentName {
   return (VALID as readonly string[]).includes(value);
 }
 
-/** Which environment this run targets. Defaults to `dev`. */
 export function currentEnvironmentName(): EnvironmentName {
   const raw = process.env.ENV ?? 'dev';
   if (!isEnvironmentName(raw)) {
@@ -72,12 +67,7 @@ export function currentEnvironmentName(): EnvironmentName {
   return raw;
 }
 
-/**
- * Resolved config for this run.
- *
- * BASE_URL still wins if set, so a one-off run against a review app or a
- * preview deployment does not need a new entry in this file.
- */
+/** BASE_URL overrides the environment's baseURL, for review apps and previews. */
 export function getEnvironment(): EnvironmentConfig {
   const config = environments[currentEnvironmentName()];
   return process.env.BASE_URL
@@ -85,13 +75,7 @@ export function getEnvironment(): EnvironmentConfig {
     : config;
 }
 
-/**
- * Credentials for a role, read from the environment rather than this file.
- *
- * Naming convention: `<ROLE>_USERNAME` / `<ROLE>_PASSWORD`, e.g.
- * `ADMIN_USERNAME`. Throws rather than returning undefined, so a missing
- * secret fails at setup with a clear message instead of as a login timeout.
- */
+/** Throws rather than returning undefined, so a missing secret fails at setup. */
 export function credentialsFor(role: string): { username: string; password: string } {
   const key = role.toUpperCase();
   const username = process.env[`${key}_USERNAME`];
@@ -108,13 +92,7 @@ export function credentialsFor(role: string): { username: string; password: stri
 
 export { environments };
 
-/**
- * Where a role's saved session lives.
- *
- * `playwright/.auth` is the location Playwright's own documentation
- * recommends. Gitignored: these files contain live cookies that would let
- * anyone holding them impersonate the test account.
- */
+/** Gitignored: these files hold live cookies that can impersonate the test account. */
 export function storageStatePath(role: Role): string {
   return `playwright/.auth/${role}.json`;
 }

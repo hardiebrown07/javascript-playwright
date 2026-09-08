@@ -2,17 +2,12 @@ import { expect, test } from '../../fixtures/api.fixture';
 import { contentItemSchema, searchResponseSchema } from '../../api/schemas';
 
 /**
- * The control for the contract tests.
- *
- * `content.test.ts` shows valid responses parsing. On its own that proves
- * little: a schema that accepted anything would pass identically. These
- * assert that realistic breakages are actually rejected, and that the error
- * names the offending field.
+ * Control for content.test.ts. A schema that accepted anything would pass there
+ * too, so these check that the breakages an API does ship get rejected,
+ * and that the error names the field.
  */
 
 async function validContent() {
-  // A minimal document matching the live shape, used as the baseline to
-  // break in each case below.
   return {
     base_path: '/calculate-your-holiday-entitlement',
     content_id: '11a41426-4d09-4b73-b7c0-7c1a0bab63e4',
@@ -77,7 +72,6 @@ test('a nested array element is validated, not just the array', async () => {
 });
 
 test('the live response still satisfies the schema', async ({ api }) => {
-  // Ties the control back to reality: the schema is strict enough to reject
-  // the breakages above, and still loose enough to accept production today.
+  // The schema rejects the cases above and still accepts what GOV.UK serves.
   await expect(api.getContent('/calculate-your-holiday-entitlement')).resolves.toBeDefined();
 });

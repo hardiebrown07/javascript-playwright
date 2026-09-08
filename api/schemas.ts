@@ -1,17 +1,9 @@
 import { z } from 'zod';
 
 /**
- * Response contracts.
- *
- * These are the point of API testing in a UI framework. A status code and a
- * couple of field assertions tell you the endpoint answered; a schema tells
- * you the shape the front end depends on has not quietly changed. A removed
- * field or a string that became a number is the kind of break that otherwise
- * surfaces as a confusing UI failure days later.
- *
- * Deliberately not exhaustive: these describe the fields this suite relies
- * on. Asserting every field an API happens to return makes the tests fail on
- * changes that affect nobody.
+ * Response contracts, covering the fields this suite reads. Validating every
+ * field GOV.UK returns would break these tests on publishing changes that no
+ * test depends on.
  */
 
 export const contentItemSchema = z.object({

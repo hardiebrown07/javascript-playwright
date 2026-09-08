@@ -11,10 +11,7 @@ export interface Timeouts {
   expect: number;
 }
 
-/**
- * Behaviour that differs between environments, so tests can branch on
- * capability rather than on environment name.
- */
+/** Behaviour that varies by environment. Tests read these flags to decide what to expect. */
 export interface FeatureFlags {
   analytics: boolean;
   cookieBanner: boolean;

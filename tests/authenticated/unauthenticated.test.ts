@@ -1,14 +1,9 @@
 import { expect, test } from '../../fixtures/auth.fixture';
 
 /**
- * The control for `session.test.ts`.
- *
- * Those tests show an authenticated page loading. On their own that proves
- * very little: if `storageState` were silently doing nothing and the app did
- * not actually gate the page, they would pass anyway. This spec runs the same
- * navigation with the session deliberately discarded and asserts it is
- * refused, so the two together demonstrate that the saved session is what
- * makes the difference.
+ * Control for session.test.ts. A storageState that silently did nothing would
+ * pass there just as well, so long as the app happened not to gate the page.
+ * Here the session is discarded and the app has to refuse.
  */
 test.use({ storageState: { cookies: [], origins: [] } });
 

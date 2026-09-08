@@ -3,11 +3,7 @@ import { LoginPage } from '../../pages/LoginPage';
 import { EnvironmentConfig } from '../../config/types';
 import { AuthStrategy, Credentials } from './types';
 
-/**
- * Username and password against the application's own login form.
- *
- * Verified end to end against saucedemo.com.
- */
+/** Username and password against the application's own login form. */
 export const formLoginStrategy: AuthStrategy = {
   name: 'form',
 
@@ -16,9 +12,7 @@ export const formLoginStrategy: AuthStrategy = {
     await loginPage.goto(env.authURL);
     await loginPage.login(credentials.username, credentials.password);
 
-    // Assert the session established here, so a credential problem fails in
-    // setup with a clear message instead of as an assertion failure in every
-    // test that depended on it.
+    // Bad credentials fail here, before any test depends on the session.
     await expect(page).toHaveURL(/inventory\.html/);
   },
 };

@@ -1,13 +1,9 @@
 import { expect, test } from '../../fixtures/api.fixture';
 
 /**
- * Using the API to derive what the UI is expected to show, rather than
- * hardcoding it.
- *
- * The value is not that it is faster. It is that the assertion cannot drift:
- * when the content team retitles the page, a test with the title hardcoded
- * fails and gets "fixed" by editing the string. This one fails only when the
- * API and the rendered page genuinely disagree, which is a real defect.
+ * Takes the expected title from the API instead of hardcoding it. When the
+ * content team retitles this page, a hardcoded assertion breaks and someone
+ * edits the string to match; this one breaks when the two layers disagree.
  */
 test('the rendered page matches the content the API serves for it', async ({
   api,

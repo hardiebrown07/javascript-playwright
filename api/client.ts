@@ -18,6 +18,7 @@ export class ApiError extends Error {
   }
 }
 
+/** Carries the failing field paths, so a drifted contract names itself. */
 export class SchemaError extends Error {
   constructor(
     readonly url: string,
@@ -32,11 +33,8 @@ export class SchemaError extends Error {
 }
 
 /**
- * Typed client over Playwright's request context.
- *
- * Every call validates the response against a schema and returns a typed
- * object, so a contract break fails at the boundary with the offending field
- * named, rather than as `undefined is not an object` somewhere downstream.
+ * Typed client over Playwright's request context. Responses are schema-checked
+ * so a contract break fails at the boundary with the offending field named.
  */
 export class GovUkApiClient {
   constructor(
@@ -44,7 +42,7 @@ export class GovUkApiClient {
     private readonly baseURL: string,
   ) {}
 
-  /** Fetches and validates in one step; throws with detail on either failure. */
+  /** Fetches, checks the status, then validates the body against the schema. */
   private async getValidated<T>(
     path: string,
     schema: z.ZodType<T>,
@@ -76,7 +74,7 @@ export class GovUkApiClient {
     });
   }
 
-  /** Escape hatch for asserting on status codes and headers directly. */
+  /** For asserting on status codes and headers directly. */
   async raw(path: string): Promise<APIResponse> {
     return this.request.get(`${this.baseURL}${path}`);
   }

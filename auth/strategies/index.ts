@@ -7,13 +7,6 @@ const strategies: Record<AuthStrategyName, AuthStrategy> = {
   'entra-id': entraIdStrategy,
 };
 
-/**
- * Resolves the strategy named by the environment.
- *
- * Selecting how to authenticate is configuration, not code: pointing the
- * framework at an Entra-protected client application is a change to
- * `config/environments.ts` plus credentials, not to any test.
- */
 export function getAuthStrategy(name: AuthStrategyName): AuthStrategy {
   const strategy = strategies[name];
   if (!strategy) {

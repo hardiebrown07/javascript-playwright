@@ -5,13 +5,8 @@ import { getAuthStrategy } from '../../auth/strategies';
 import { hasValidSession } from '../../auth/sessionStore';
 
 /**
- * Signs each role in once, before the suite runs, and saves the resulting
- * cookies and localStorage to disk.
- *
- * A saved session that is still in date is reused rather than re-created, so
- * authentication persists across runs and not merely across the tests within
- * one run. On an SSO flow, where sign-in is a redirect chain rather than a
- * single form post, that is usually the slowest thing in the pipeline.
+ * Signs each role in once and saves the session. A session still in date is
+ * reused, so authentication persists across runs, not just across tests.
  */
 for (const role of ROLES) {
   setup(`authenticate as ${role}`, async ({ page }) => {

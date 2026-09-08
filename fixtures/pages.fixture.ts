@@ -11,12 +11,7 @@ export interface Environment {
   env: EnvironmentConfig;
 }
 
-/**
- * Page objects available to every test.
- *
- * Fixtures are constructed lazily, so a test that only destructures
- * `resultsPage` never builds the other three.
- */
+/** Page objects, constructed lazily: a test only builds what it destructures. */
 export interface Pages {
   holidayCalculatorPage: HolidayCalculatorPage;
   workPatternPage: WorkPatternPage;
@@ -25,13 +20,9 @@ export interface Pages {
 }
 
 /**
- * Opens the calculator, clears the cookie banner and lands on the first
- * question. Every journey starts here, so it runs automatically rather than
- * being repeated as three steps at the top of each spec.
- *
- * It is `auto`, so tests do not name it. API tests, which should not launch a
- * browser at all, will import their own `test` from a separate fixture module
- * rather than this one.
+ * Opens the calculator and lands on the first question. Marked `auto` because
+ * TypeScript rejects a destructured fixture the test never reads. API specs
+ * import their own `test`, so they never launch a browser for this.
  */
 interface Journey {
   startedCalculator: void;

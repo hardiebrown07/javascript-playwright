@@ -33,8 +33,8 @@ test('an unknown path returns 404 rather than an empty 200', async ({ api }) => 
 test('the client raises ApiError, with status and URL, on a failed request', async ({
   api,
 }) => {
-  // Asserting the framework's own error handling. A client that swallows a
-  // 404 and returns undefined turns one clear failure into several vague ones.
+  // Covers the client's own error handling. Swallow the 404 and return
+  // undefined, and the failure surfaces somewhere further down instead.
   await expect(api.getContent('/this-page-does-not-exist-8f3a2b')).rejects.toThrow(
     ApiError,
   );

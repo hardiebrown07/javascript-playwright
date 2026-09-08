@@ -4,9 +4,8 @@ test('a saved session lands straight on the app, with no login form', async ({
   page,
   env,
 }) => {
-  // The app gates this page: see unauthenticated.test.ts, which asserts the
-  // same navigation is refused without a session. Arriving here is therefore
-  // evidence that the saved session was applied, not just that the page loads.
+  // unauthenticated.test.ts asserts this same navigation is refused without a
+  // session, so reaching the inventory shows storageState was applied.
   await page.goto(`${env.authURL}/inventory.html`);
 
   await expect(page).toHaveURL(/inventory\.html/);
@@ -41,7 +40,7 @@ test('a second role can be opened alongside the default one', async ({
   await page.goto(`${env.authURL}/inventory.html`);
   await expect(page.locator('.inventory_list')).toBeVisible();
 
-  // Same test, a different identity, neither of them logging in.
+  // Two identities inside one test, and neither logs in.
   const problemPage = await pageAs('problem');
   await problemPage.goto(`${env.authURL}/inventory.html`);
   await expect(problemPage.locator('.inventory_list')).toBeVisible();

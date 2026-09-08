@@ -5,22 +5,14 @@ import { EnvironmentConfig } from '../config/types';
 
 export interface AuthFixtures {
   env: EnvironmentConfig;
-  /**
-   * A page already signed in as the given role, without going through the
-   * login form. Use for the cases where one test needs a second identity.
-   */
+  /** A page signed in as another role, for tests needing two identities. */
   pageAs: (role: Role) => Promise<Page>;
 }
 
 /**
- * `test` for authenticated specs.
- *
- * Deliberately separate from `pages.fixture`: that one auto-navigates to the
- * calculator, which authenticated tests neither need nor want. Importing the
- * right `test` is how a spec declares what kind of test it is.
- *
- * The default `page` is already authenticated, because the project supplies
- * `storageState` in `playwright.config.ts`.
+ * `test` for authenticated specs. Separate from `pages.fixture`, which
+ * auto-navigates to the calculator. `page` arrives signed in via the
+ * project's `storageState`.
  */
 export const test = base.extend<AuthFixtures>({
   env: async ({}, use) => {
@@ -40,7 +32,6 @@ export const test = base.extend<AuthFixtures>({
 
     await use(open);
 
-    // Tear down every context this test opened, whatever it did with them.
     await Promise.all(contexts.map((c) => c.close()));
   },
 });
