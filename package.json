@@ -21,9 +21,9 @@
   "license": "ISC",
   "description": "A JavaScript Playwright UI test automation framework: page object model, data-driven tests, Docker and CI.",
   "devDependencies": {
-    "@playwright/test": "^1.50.1",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^22.13.6",
-    "playwright": "^1.50.1"
+    "playwright": "^1.63.0"
   },
   "dependencies": {
     "date-fns": "^4.1.0",

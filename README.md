@@ -6,7 +6,7 @@ A JavaScript test automation framework built with [Playwright](https://playwrigh
 
 ```sh
 npm install
-npx playwright install --with-deps
+npx playwright install
 npm test
 ```
 
