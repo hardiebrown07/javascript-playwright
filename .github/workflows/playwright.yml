@@ -90,6 +90,12 @@ jobs:
     # and the nightly schedule.
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    # Firefox and WebKit need system libraries the bare runner does not carry.
+    # The official image ships all three browsers and their dependencies, so
+    # there is no apt step and nothing to download.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --user 1001
     strategy:
       fail-fast: false
       matrix:
@@ -103,21 +109,6 @@ jobs:
       - run: npm ci
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-
-      - name: Resolve Playwright version
-        id: pw
-        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
-
-      - name: Restore browsers
-        id: browser-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}-all
-
-      - name: Install browsers
-        if: steps.browser-cache.outputs.cache-hit != 'true'
-        run: npx playwright install
 
       - name: Run shard ${{ matrix.shard }} of 4
         run: npx playwright test --shard=${{ matrix.shard }}/4 --reporter=blob

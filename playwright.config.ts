@@ -56,6 +56,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
+    // axe evaluates the rendered DOM, which does not vary by browser here.
+    {
+      name: 'a11y',
+      testDir: './tests/a11y',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // Routing is per-page, so these run on one browser only.
     {
       name: 'network',
@@ -67,17 +74,35 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/authenticated/**', '**/api/**', '**/network/**', '**/*.setup.ts'],
+      testIgnore: [
+        '**/authenticated/**',
+        '**/api/**',
+        '**/network/**',
+        '**/a11y/**',
+        '**/*.setup.ts',
+      ],
     },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: ['**/authenticated/**', '**/api/**', '**/network/**', '**/*.setup.ts'],
+      testIgnore: [
+        '**/authenticated/**',
+        '**/api/**',
+        '**/network/**',
+        '**/a11y/**',
+        '**/*.setup.ts',
+      ],
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: ['**/authenticated/**', '**/api/**', '**/network/**', '**/*.setup.ts'],
+      testIgnore: [
+        '**/authenticated/**',
+        '**/api/**',
+        '**/network/**',
+        '**/a11y/**',
+        '**/*.setup.ts',
+      ],
     },
 
     // Starts signed in: no login step, no login flakiness.

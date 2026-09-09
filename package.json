@@ -35,10 +35,12 @@
   "license": "ISC",
   "description": "A TypeScript Playwright UI test automation framework: page object model, data-driven tests, Docker and CI.",
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.6.0",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.13.6",
+    "axe-core": "^4.13.0",
     "cross-env": "^10.1.0",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",

@@ -43,6 +43,20 @@ test('name', { tag: ['@smoke'] }, async ({ page }) => {
 
 `--grep-invert @smoke` selects the complement, for a nightly job that skips what the PR gate covered.
 
+## Accessibility
+
+`tests/a11y/` scans five screens of the journey against WCAG 2.2 AA, the level the UK public sector
+accessibility regulations require. Form controls, error summaries and results are where defects
+live, so scanning the landing page alone would miss them.
+
+```sh
+npx playwright test --project=a11y
+```
+
+Failures carry the offending selectors and rule descriptions, and the full axe output is attached to
+the run. `scannerWorks.a11y.test.ts` injects a known violation and asserts it is caught, since a
+scanner that is not running looks exactly like a clean page.
+
 ## Network interception
 
 `tests/network/` uses `page.route()` to cover states the live site cannot produce on demand.
