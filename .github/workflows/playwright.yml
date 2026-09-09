@@ -65,9 +65,12 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
 
+      # No --with-deps: the runner image already carries Playwright's system
+      # libraries, and the apt step it triggers fails intermittently against
+      # the Google Chrome repository.
       - name: Install browsers
         if: steps.browser-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
 
       - run: npm run test:smoke
         env:
@@ -114,7 +117,7 @@ jobs:
 
       - name: Install browsers
         if: steps.browser-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install
 
       - name: Run shard ${{ matrix.shard }} of 4
         run: npx playwright test --shard=${{ matrix.shard }}/4 --reporter=blob
