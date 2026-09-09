@@ -1,0 +1,33 @@
+name: Update visual baselines
+
+# Baselines must be generated where they are compared. This runs the visual
+# project in the same container CI uses and uploads the result to commit.
+on:
+  workflow_dispatch:
+
+jobs:
+  baselines:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+      - name: Generate baselines
+        run: npx playwright test --project=visual --update-snapshots
+        env:
+          CI: true
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: visual-baselines
+          path: tests/visual/**/*.png
+          retention-days: 1

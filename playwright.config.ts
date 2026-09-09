@@ -20,7 +20,15 @@ export default defineConfig({
   workers: process.env.CI || process.env.DOCKER ? 4 : undefined,
 
   timeout: env.timeouts.navigation * 2,
-  expect: { timeout: env.timeouts.expect },
+  expect: {
+    timeout: env.timeouts.expect,
+    toHaveScreenshot: {
+      // Anti-aliasing differs slightly between runs; 1% of pixels absorbs that
+      // without hiding a real layout change.
+      maxDiffPixelRatio: 0.01,
+      animations: 'disabled',
+    },
+  },
 
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
@@ -56,6 +64,14 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
+    // Baselines are generated on Linux in CI and compared there. Running this
+    // on a developer's macOS would fail on font rendering alone.
+    {
+      name: 'visual',
+      testDir: './tests/visual',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // axe evaluates the rendered DOM, which does not vary by browser here.
     {
       name: 'a11y',
@@ -79,6 +95,7 @@ export default defineConfig({
         '**/api/**',
         '**/network/**',
         '**/a11y/**',
+        '**/visual/**',
         '**/*.setup.ts',
       ],
     },
@@ -90,6 +107,7 @@ export default defineConfig({
         '**/api/**',
         '**/network/**',
         '**/a11y/**',
+        '**/visual/**',
         '**/*.setup.ts',
       ],
     },
@@ -101,6 +119,7 @@ export default defineConfig({
         '**/api/**',
         '**/network/**',
         '**/a11y/**',
+        '**/visual/**',
         '**/*.setup.ts',
       ],
     },
